@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
+    public bool doubleJump = false; 
 
 
 
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         if(isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+            doubleJump = true;
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -49,6 +51,13 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
+        else if (Input.GetButtonDown("Jump") && doubleJump)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            doubleJump = false;
+        }
+
+
 
         velocity.y += gravity * Time.deltaTime;
 
