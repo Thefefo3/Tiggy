@@ -787,8 +787,8 @@ MonoBehaviour:
   moveSpeed: 6
   airMultiplier: 0.4
   movementMultiplier: 10
-  walkSpeed: 4
-  sprintSpeed: 6
+  walkSpeed: 6
+  sprintSpeed: 9
   acceleration: 15
   groundDrag: 6
   airDrag: 2
