@@ -4,116 +4,98 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Player")]
+    float playerHeight = 2f;
 
+    [Header("Jumping")]
+    public float jumpForce = 15f;
 
-    public CharacterController controller;
+    [Header("Movement")]
+    public float moveSpeed = 6f;
+    public float movementMultiplier = 10f;
+    [SerializeField] float airMultiplier = 0.4f;
 
-    public float speed = 12f;
-    public float gravity = -9.81f;
-    public float jumpHeight = 3f;
-    public bool doubleJump = false; 
+    float horizotalMovement;
+    float verticalMovement;
 
+    [Header("Drag")]
+    public float groundDrag = 6f;
+    public float airDrag = 2f;
 
-    public Transform groundCheck;
-    public float groundDistance = 0.7f;
-    public LayerMask groundMask;
+    Vector3 moveDirection;
 
-    public LayerMask whatIsWall;
-    public float wallrunForce, maxWallrunTime, maxWallSpeed;
-    bool isWallRight, isWallLeft;
-    bool isWallRunning;
-    public float maxWallRunCameraTilt, wallRunCameraTilt;
+    [Header("KeyBinds")]
+    [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
-    public Transform playerCam;
-    public Transform orientation;
-
-    private Rigidbody rb;
-
-    Vector3 velocity;
     bool isGrounded;
 
-    private void WallRunInput()
+    
+
+    Rigidbody rb;
+
+    private void Start()
     {
-        if (Input.GetKey(KeyCode.D) && isWallRight) StartWallRun();
-        if (Input.GetKey(KeyCode.A) && isWallLeft) StartWallRun();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+
     }
 
-    private void StartWallRun()
+
+    private void Update()
     {
-        rb.useGravity = false;
-        isWallRunning = true;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.1f);
 
-        if(rb.velocity.magnitude <= maxWallSpeed)
+
+        MyInput();
+        ControlDrag();
+
+        if(Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            rb.AddForce(orientation.forward * wallrunForce * Time.deltaTime);
-
-            if (isWallRight)
-                rb.AddForce(orientation.right * wallrunForce / 5 * Time.deltaTime);
-            else
-                rb.AddForce(- orientation.right * wallrunForce / 5 * Time.deltaTime);
-
+            Jump();
         }
     }
 
-    private void StopWallRun()
+    void Jump()
     {
-        rb.useGravity = true;
-        isWallRunning = false;
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
-    private void CheckForWall()
+    void MyInput()
     {
-        isWallRight = Physics.Raycast(transform.position, orientation.right, 1f, whatIsWall);
-        isWallLeft = Physics.Raycast(transform.position, -orientation.right, 1f, whatIsWall);
+        horizotalMovement = Input.GetAxisRaw("Horizontal");
+        verticalMovement = Input.GetAxisRaw("Vertical");
 
-        if (!isWallRight && !isWallLeft) StopWallRun();
+        moveDirection = transform.forward * verticalMovement + transform.right * horizotalMovement;
+
     }
 
- 
-
-    // Start is called before the first frame update
-    void Start()
+    private void FixedUpdate()
     {
-     
+        MovePlayer();
     }
 
-    // Update is called once per frame
-    void Update()
+    void ControlDrag()
     {
-
-        CheckForWall();
-        WallRunInput();
-
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        if(isGrounded && velocity.y < 0)
+        if (isGrounded)
         {
-            velocity.y = -2f;
-            doubleJump = true;
+            rb.drag = groundDrag;
         }
-
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x +  transform.forward * z;
-
-        controller.Move(move * speed * Time.deltaTime);
-
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        else
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            rb.drag = airDrag;
         }
-        else if (Input.GetButtonDown("Jump") && doubleJump)
+    }
+
+    void MovePlayer()
+    {
+        if (isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            doubleJump = false;
+            rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
         }
-
-
-
-        velocity.y += gravity * Time.deltaTime;
-
-        controller.Move(velocity * Time.deltaTime);
-
+        else
+        {
+            rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
+        }
+       
     }
 }
