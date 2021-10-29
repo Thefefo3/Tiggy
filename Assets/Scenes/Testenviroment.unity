@@ -786,6 +786,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {fileID: 1092552262}
   jumpForce: 9
+  maxJumps: 2
+  jumpsLeft: 0
   moveSpeed: 6
   airMultiplier: 0.4
   movementMultiplier: 10
@@ -864,11 +866,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6a02cb11417834aa4545d5f361faeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myPlayerMovement: {fileID: 1045796543}
   orientation: {fileID: 1092552262}
   wallDistance: 0.6
   minimumJumpHeight: 1.2
   wallRunGravity: 0.4
-  wallRunJumpForce: 6
+  wallRunJumpForce: 4
   cam: {fileID: 278167417}
   fov: 90
   wallRunFov: 110

@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jumping")]
     public float jumpForce = 9f;
+    public float maxJumps = 2;
+    public float jumpsLeft = 0;
 
     [Header("Movement")]
     [SerializeField] float moveSpeed = 6f;
@@ -73,14 +75,19 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        
         MyInput();
         ControlDrag();
         ControlSpeed();
 
         //Jump
-        if(Input.GetKeyDown(jumpKey) && isGrounded)
+        if(Input.GetKeyDown(jumpKey) && isGrounded || Input.GetKeyDown(jumpKey) && jumpsLeft > 0)
         {
             Jump();
+        }
+        if (isGrounded)
+        {
+            jumpsLeft = maxJumps - 1;
         }
 
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
@@ -88,8 +95,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if (isGrounded)
+        if (isGrounded || jumpsLeft > 0)
         {
+            jumpsLeft = jumpsLeft - 1;
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }

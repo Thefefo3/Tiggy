@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WallRunning : MonoBehaviour
 {
+    public PlayerMovement myPlayerMovement;
+
+
     [Header("Movement")]
     [SerializeField] private Transform orientation;
 
@@ -76,6 +79,7 @@ public class WallRunning : MonoBehaviour
 
     void StartWallRun()
     {
+        myPlayerMovement.jumpsLeft = 1;
         rb.useGravity = false;
 
         rb.AddForce(Vector3.down * wallRunGravity, ForceMode.Force);
@@ -94,6 +98,7 @@ public class WallRunning : MonoBehaviour
                 Vector3 wallRunJumpDirection = transform.up + leftWallHit.normal;
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
                 rb.AddForce(wallRunJumpDirection * wallRunJumpForce * 100, ForceMode.Force);
+               
             }
             else if (wallRight)
             {
