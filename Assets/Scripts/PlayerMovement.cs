@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] CapsuleCollider collider;
     [SerializeField] Transform orientation;
 
     [Header("Player")]
@@ -24,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float sprintSpeed = 9f;
     [SerializeField] float acceleration = 15f;
 
+    [Header("Sliding")]
+    [SerializeField] float slidingSpeed = 18f;
+    [SerializeField] float slideTime = 1f;
+
     [Header("Drag")]
     [SerializeField] float groundDrag = 6f;
     [SerializeField] float airDrag = 2f;
@@ -31,11 +36,14 @@ public class PlayerMovement : MonoBehaviour
     [Header("KeyBinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
+    [SerializeField] KeyCode slideKey = KeyCode.LeftControl;
 
     [Header("Ground Detection")]
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundMask;
     [SerializeField] float groundDistance = 0.1f;
+    
+    //States
     public bool isGrounded { get; private set; }
 
     Vector3 moveDirection;
@@ -45,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     float verticalMovement;
 
     Rigidbody rb;
+    private float originalHeight; //player original height
+    private float heightReduction = 0.3f;
 
     RaycastHit slopeHit;
 
@@ -68,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-
+        originalHeight = collider.height;
     }
 
 
@@ -76,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         
+
         MyInput();
         ControlDrag();
         ControlSpeed();
@@ -88,6 +99,15 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             jumpsLeft = maxJumps - 1;
+        }
+
+        if (Input.GetKey(sprintKey) && Input.GetKeyDown(slideKey) && isGrounded)
+        {
+            Slide();
+        }
+        if (Input.GetKeyUp(slideKey))
+        {
+            collider.height = originalHeight;
         }
 
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
@@ -103,6 +123,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void Slide()
+    {
+        collider.height = heightReduction * originalHeight;
+        rb.AddForce(moveDirection * slidingSpeed, ForceMode.VelocityChange);
+    }
+
     void MyInput()
     {
         horizotalMovement = Input.GetAxisRaw("Horizontal");
@@ -114,13 +140,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Movement
         MovePlayer();
+
+        //Sliding
+        
     }
 
     void ControlSpeed()
     {
-        if(Input.GetKey(sprintKey) && isGrounded)
-        {
+        if (Input.GetKey(sprintKey) && isGrounded)
+        {            
             moveSpeed = Mathf.Lerp(moveSpeed, sprintSpeed, acceleration * Time.deltaTime);
         }
         else
