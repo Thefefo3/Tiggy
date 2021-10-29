@@ -408,7 +408,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 90
+  field of view: 80
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -765,6 +765,7 @@ GameObject:
   - component: {fileID: 1045796543}
   - component: {fileID: 1045796546}
   - component: {fileID: 1045796547}
+  - component: {fileID: 1045796548}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -784,6 +785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7cf07ae0b8cfd4a86d4b9ccb81e317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fovController: {fileID: 1045796548}
   orientation: {fileID: 1092552262}
   jumpForce: 9
   maxJumps: 2
@@ -867,17 +869,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayerMovement: {fileID: 1045796543}
+  fovController: {fileID: 1045796548}
   orientation: {fileID: 1092552262}
   wallDistance: 0.6
   minimumJumpHeight: 1.2
-  wallRunGravity: 0.4
-  wallRunJumpForce: 4
-  cam: {fileID: 278167417}
-  fov: 90
-  wallRunFov: 110
-  wallRunFovTime: 20
+  wallRunGravity: 0.2
+  wallRunJumpForce: 2
   camTilt: 20
   camTiltTime: 20
+--- !u!114 &1045796548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045796542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64147fa45270d4448b6d8dc9a2c0a6c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 278167417}
 --- !u!1 &1092221279
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public FovController fovController;
+
     [SerializeField] Transform orientation;
 
     [Header("Player")]
@@ -21,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Sprinting")]
     [SerializeField] float walkSpeed = 6f;
-    [SerializeField] float sprintSpeed = 9f;
+    [SerializeField] float sprintSpeed = 14f;
     [SerializeField] float acceleration = 15f;
 
     [Header("Drag")]
@@ -37,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] float groundDistance = 0.1f;
     public bool isGrounded { get; private set; }
+
 
     Vector3 moveDirection;
     Vector3 slopeMoveDirection;
@@ -91,6 +94,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
+
+        //fovController.setFovToSpeed;
     }
 
     void Jump()
@@ -122,9 +127,11 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKey(sprintKey) && isGrounded)
         {
             moveSpeed = Mathf.Lerp(moveSpeed, sprintSpeed, acceleration * Time.deltaTime);
+            fovController.setRunFov();
         }
         else
         {
+            fovController.resetFov();
             moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class WallRunning : MonoBehaviour
 {
     public PlayerMovement myPlayerMovement;
-
+    public FovController fovController;
 
     [Header("Movement")]
     [SerializeField] private Transform orientation;
@@ -19,12 +19,9 @@ public class WallRunning : MonoBehaviour
     [SerializeField] private float wallRunJumpForce = 5f;
 
     [Header("Camera")]
-    [SerializeField] private Camera cam;
-    [SerializeField] private float fov = 90;
-    [SerializeField] private float wallRunFov = 110;
-    [SerializeField] private float wallRunFovTime = 20f;
     [SerializeField] private float camTilt = 20f;
     [SerializeField] private float camTiltTime = 20f;
+
 
     public float tilt { get; private set; }
     bool CanWallRun()
@@ -84,7 +81,7 @@ public class WallRunning : MonoBehaviour
 
         rb.AddForce(Vector3.down * wallRunGravity, ForceMode.Force);
 
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, wallRunFov, wallRunFovTime * Time.deltaTime);
+        fovController.setWallRunFov();
 
         if (wallLeft)
             tilt = Mathf.Lerp(tilt, -camTilt, camTiltTime * Time.deltaTime);
@@ -113,7 +110,7 @@ public class WallRunning : MonoBehaviour
     {
         rb.useGravity = true;
 
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, wallRunFovTime * Time.deltaTime);
+        fovController.resetFov();
         tilt = Mathf.Lerp(tilt, 0, camTiltTime * Time.deltaTime);
     }
 }
