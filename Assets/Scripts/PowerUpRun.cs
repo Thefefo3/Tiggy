@@ -28,11 +28,16 @@ public class PowerUpRun : MonoBehaviour
         PlayerMovement movement = player.GetComponentInParent<PlayerMovement>();
         movement.sprintSpeed *= multiplier;
 
+
+        //hide component
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<Collider>().enabled = false;
 
+
+        //wait for time
         yield return new WaitForSeconds(duration);
 
+        //return to default power
         movement.sprintSpeed /= multiplier;
 
         //Remove powerup object
