@@ -784,6 +784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7cf07ae0b8cfd4a86d4b9ccb81e317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collider: {fileID: 1514787396}
   orientation: {fileID: 1092552262}
   jumpForce: 9
   maxJumps: 2
@@ -794,10 +795,13 @@ MonoBehaviour:
   walkSpeed: 6
   sprintSpeed: 9
   acceleration: 15
+  slidingSpeed: 18
+  slideTime: 1
   groundDrag: 6
   airDrag: 2
   jumpKey: 32
   sprintKey: 304
+  slideKey: 306
   groundCheck: {fileID: 1493233891}
   groundMask:
     serializedVersion: 2
