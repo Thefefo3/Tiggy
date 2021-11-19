@@ -5,6 +5,7 @@ using UnityEngine;
 public class PowerUpSpawner : MonoBehaviour
 {
 
+    public GameObject[] powerUps;
     public GameObject powerUp;
     public float spawnWait = 500;
     public float spawnMostWait;
@@ -31,7 +32,8 @@ public class PowerUpSpawner : MonoBehaviour
         //var newPowerUp = null;
         while (true)
         {
-            randPowerUp = Random.Range(0,1); //(min, max)
+            randPowerUp = Random.Range(0,2); //(min, max)
+            powerUp = powerUps[randPowerUp];
 
             Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
