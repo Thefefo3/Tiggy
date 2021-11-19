@@ -7,7 +7,7 @@ public class PowerUpRun : MonoBehaviour
     public GameObject pickupEffect;
 
     public float multiplier = 1.5f;
-    public float duration = 10f;
+    public float duration = 4f;
 
 
     void OnTriggerEnter(Collider other)
@@ -20,9 +20,11 @@ public class PowerUpRun : MonoBehaviour
 
     IEnumerator Pickup(Collider player)
     {
-        //Spawn a cool effect
-        Instantiate(pickupEffect, transform.position, transform.rotation);
+        //var clonedEffect = pickupEffect;
 
+        //Spawn a cool effect
+        var clonedEffect = Instantiate(pickupEffect, transform.position, transform.rotation);
+        
 
         //Apply Effect to the player
         PlayerMovement movement = player.GetComponentInParent<PlayerMovement>();
@@ -41,6 +43,7 @@ public class PowerUpRun : MonoBehaviour
         movement.sprintSpeed /= multiplier;
 
         //Remove powerup object
+        Destroy(clonedEffect);
         Destroy(gameObject);
        
     }
