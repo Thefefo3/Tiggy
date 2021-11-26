@@ -42,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask groundMask;
     [SerializeField] float groundDistance = 0.1f;
+
+    [SerializeField] Transform cameraPosition;
     
     //States
     public bool isGrounded { get; private set; }
@@ -79,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalHeight = collider.height;
+        collider.center = new Vector3(0, 0, 0);
     }
 
 
@@ -108,6 +111,8 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyUp(slideKey))
         {
             collider.height = originalHeight;
+            collider.center = new Vector3(0, 0, 0);
+            cameraPosition.localPosition = new Vector3(0, cameraPosition.localPosition.y + 0.2448258f, 0);
         }
 
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
@@ -125,8 +130,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Slide()
     {
-        collider.height = heightReduction * originalHeight;
-        rb.AddForce(moveDirection * slidingSpeed, ForceMode.VelocityChange);
+        collider.height = 1.510348f;
+        collider.center = new Vector3(0, -0.2448258f, 0);
+        cameraPosition.localPosition = new Vector3(0, cameraPosition.localPosition.y - 0.2448258f, 0);
+        rb.AddForce(moveDirection * slidingSpeed, ForceMode.Impulse);
     }
 
     void MyInput()
