@@ -14,10 +14,13 @@ public class PowerUpTripleJump : MonoBehaviour
     public Text messages;
     public static string text;
 
+    public AudioSource pickUpSound;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            pickUpSound.Play();
             StartCoroutine(Pickup(other));
         }
     }

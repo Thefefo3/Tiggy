@@ -14,11 +14,14 @@ public class PowerUpRun : MonoBehaviour
     public Text messages;
     public static string text;
 
+    public AudioSource pickUpSound;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-           StartCoroutine(Pickup(other));
+            pickUpSound.Play();
+            StartCoroutine(Pickup(other));
         }
     }
 
