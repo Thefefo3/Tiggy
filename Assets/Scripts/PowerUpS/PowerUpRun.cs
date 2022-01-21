@@ -14,11 +14,17 @@ public class PowerUpRun : MonoBehaviour
     public Text messages;
     public static string text;
 
+
+    public AudioClip endPowerUpClip;
+
+    public AudioSource pickUpSound;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-           StartCoroutine(Pickup(other));
+            pickUpSound.Play();
+            StartCoroutine(Pickup(other));
         }
     }
 
@@ -53,7 +59,7 @@ public class PowerUpRun : MonoBehaviour
 
         //return to default power
         movement.sprintSpeed /= multiplier;
-
+        AudioSource.PlayClipAtPoint(endPowerUpClip, player.transform.position);
         messages = GameObject.Find("PowerUpTXT").GetComponent<Text>();
         text = "Extra Speed Expired \n " + "Running Speed = " + movement.sprintSpeed;
         messages.text = text;
