@@ -14,6 +14,8 @@ public class PowerUpSpawner : MonoBehaviour
 
     int randPowerUp;
 
+    public AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +40,7 @@ public class PowerUpSpawner : MonoBehaviour
             Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
             var newPowerUp = Instantiate(powerUp, transform.position + Vector3.up , gameObject.transform.rotation);
-
+            audioSource.Play();
             while(newPowerUp != null)
             {
                 yield return new WaitForSeconds(spawnWait);

@@ -15,6 +15,7 @@ public class PowerUpTripleJump : MonoBehaviour
     public static string text;
 
     public AudioSource pickUpSound;
+    public AudioSource endPowerUpSound;
 
     void OnTriggerEnter(Collider other)
     {
@@ -55,7 +56,7 @@ public class PowerUpTripleJump : MonoBehaviour
 
         //return to default power
         movement.maxJumps -= adder;
-
+        endPowerUpSound.Play();
         messages = GameObject.Find("PowerUpTXT").GetComponent<Text>();
         text = "Extra Jump Expired \n " + "Total Jumps = " + movement.maxJumps;
         messages.text = text;
