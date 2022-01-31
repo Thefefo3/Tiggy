@@ -72,6 +72,10 @@ public class WallRunning : MonoBehaviour
     {
         wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallHit, wallDistance);
         wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallHit, wallDistance);
+        Debug.DrawRay(transform.position, -orientation.right * 10, Color.green);
+        Debug.DrawRay(transform.position, orientation.right * 10, Color.red);
+        Debug.Log(leftWallHit.distance);
+        Debug.Log(rightWallHit.distance);
     }
 
     void StartWallRun()
