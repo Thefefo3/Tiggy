@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
         {
             if (tagged == true)
             {
-                //Debug.Log("TAGGED");
+                Debug.Log("TAGGED");
                 StartCoroutine(TagPlayer(other)); 
             }
         }

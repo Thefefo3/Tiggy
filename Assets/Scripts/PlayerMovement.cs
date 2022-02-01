@@ -109,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             jumpsLeft = maxJumps - 1;
+         
         }
 
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
