@@ -309,7 +309,7 @@ MonoBehaviour:
   groundCheck: {fileID: 8521509536077691406}
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 512
   groundDistance: 0.1
   cameraPosition: {fileID: 8521509537088483889}
 --- !u!114 &8521509536737451055
