@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class FovController : MonoBehaviour
 {
@@ -14,12 +15,19 @@ public class FovController : MonoBehaviour
     private float runFOVMultiplier = 1.5f;
     private float runFovTime = 1f;
 
-
+    PhotonView PV;
 
     float initialFOV;
 
+    void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
+
     void Start()
     {
+        if (!PV.IsMine)
+            return;
         initialFOV = cam.fieldOfView;
         Debug.Log(initialFOV * runFOVMultiplier);
     }
