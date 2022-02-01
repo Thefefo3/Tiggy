@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
     public FovController fovController;
+
+    PhotonView PV;
 
     [SerializeField] CapsuleCollider collider;
     [SerializeField] Transform orientation;
@@ -63,24 +66,18 @@ public class PlayerMovement : MonoBehaviour
 
     RaycastHit slopeHit;
 
-    private bool OnSlope()
+    void Awake()
     {
-        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
-        {
-            if(slopeHit.normal != Vector3.up)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
+        PV = GetComponent<PhotonView>();
     }
 
     private void Start()
     {
+        if (!PV.IsMine)
+        {
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(rb);
+        }
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalHeight = collider.height;
@@ -90,6 +87,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!PV.IsMine)
+            return;
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         
 
@@ -132,6 +132,21 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
+        {
+            if (slopeHit.normal != Vector3.up)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
 
     void Slide()
     {
@@ -150,14 +165,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        //Movement
-        MovePlayer();
-
-        //Sliding
-        
-    }
 
     void ControlSpeed()
     {
@@ -200,5 +207,15 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
        
+    }
+    private void FixedUpdate()
+    {
+        if (!PV.IsMine)
+            return;
+        //Movement
+        MovePlayer();
+
+        //Sliding
+
     }
 }
