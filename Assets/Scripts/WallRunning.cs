@@ -22,6 +22,8 @@ public class WallRunning : MonoBehaviour
     [SerializeField] private float camTilt = 20f;
     [SerializeField] private float camTiltTime = 20f;
 
+    bool isWallRunning;
+
 
     public float tilt { get; private set; }
     bool CanWallRun()
@@ -40,6 +42,11 @@ public class WallRunning : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    public bool getIsWallRunning()
+    {
+        return isWallRunning;
     }
 
     private void Update()
@@ -80,6 +87,7 @@ public class WallRunning : MonoBehaviour
 
     void StartWallRun()
     {
+        isWallRunning = true;
         myPlayerMovement.jumpsLeft = 1;
         rb.useGravity = false;
 
@@ -112,6 +120,7 @@ public class WallRunning : MonoBehaviour
 
     void StopWallRun()
     {
+        isWallRunning = false;
         rb.useGravity = true;
 
         fovController.resetFov();

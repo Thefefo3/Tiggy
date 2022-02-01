@@ -288,14 +288,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fovController: {fileID: 8521509536737451049}
+  wallRunning: {fileID: 8521509536737451054}
   collider: {fileID: 8521509536132667561}
   orientation: {fileID: 8521509535945084075}
-  jumpForce: 9
+  jumpForce: 17
   maxJumps: 2
   jumpsLeft: 0
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2.5
   moveSpeed: 6
   airMultiplier: 0.4
-  movementMultiplier: 10
+  movementMultiplier: 12
   walkSpeed: 6
   sprintSpeed: 9
   acceleration: 15
@@ -304,8 +307,6 @@ MonoBehaviour:
   groundDrag: 6
   airDrag: 2
   jumpKey: 32
-  sprintKey: 304
-  slideKey: 306
   groundCheck: {fileID: 8521509536077691406}
   groundMask:
     serializedVersion: 2
@@ -346,8 +347,8 @@ MonoBehaviour:
   orientation: {fileID: 8521509535945084075}
   wallDistance: 0.6
   minimumJumpHeight: 1.2
-  wallRunGravity: 0.2
-  wallRunJumpForce: 2
+  wallRunGravity: 0
+  wallRunJumpForce: 3
   camTilt: 20
   camTiltTime: 20
 --- !u!114 &8521509536737451049

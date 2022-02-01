@@ -6,6 +6,7 @@ using Photon.Pun;
 public class PlayerMovement : MonoBehaviour
 {
     public FovController fovController;
+    public WallRunning wallRunning;
 
     PhotonView PV;
 
@@ -19,14 +20,16 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 9f;
     public float maxJumps = 2;
     public float jumpsLeft = 0;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2.5f;
 
     [Header("Movement")]
-    [SerializeField] float moveSpeed = 6f;
+    [SerializeField] float moveSpeed = 14f;
     [SerializeField] float airMultiplier = 0.4f;
     [SerializeField] float movementMultiplier = 10f;
 
     [Header("Sprinting")]
-    [SerializeField] float walkSpeed = 6f;
+    [SerializeField] float walkSpeed = 14f;
     [SerializeField] public float sprintSpeed = 14f;
     [SerializeField] float acceleration = 15f;
 
@@ -40,8 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("KeyBinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
-    [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-    [SerializeField] KeyCode slideKey = KeyCode.LeftControl;
+
 
     [Header("Ground Detection")]
     [SerializeField] Transform groundCheck;
@@ -96,9 +98,11 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         ControlDrag();
         ControlSpeed();
+        ControlFOV();
+        ControlFall();
 
         //Jump
-        if(Input.GetKeyDown(jumpKey) && isGrounded || Input.GetKeyDown(jumpKey) && jumpsLeft > 0)
+        if (Input.GetKeyDown(jumpKey) && isGrounded || Input.GetKeyDown(jumpKey) && jumpsLeft > 0)
         {
             Jump();
         }
@@ -107,20 +111,27 @@ public class PlayerMovement : MonoBehaviour
             jumpsLeft = maxJumps - 1;
         }
 
-        if (Input.GetKey(sprintKey) && Input.GetKeyDown(slideKey) && isGrounded)
-        {
-            Slide();
-        }
-        if (Input.GetKeyUp(slideKey))
-        {
-            collider.height = originalHeight;
-            collider.center = new Vector3(0, 0, 0);
-            cameraPosition.localPosition = new Vector3(0, cameraPosition.localPosition.y + 0.2448258f, 0);
-        }
-
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
 
         //fovController.setFovToSpeed;
+    }
+
+
+
+    void ControlFall()
+    {
+        if (!wallRunning.getIsWallRunning())
+        {
+            if (rb.velocity.y < 0)
+            {
+                rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            }
+            else if (rb.velocity.y > 0 && !Input.GetKeyDown(jumpKey))
+            {
+                rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            }
+        }
+       
     }
 
     void Jump()
@@ -132,6 +143,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
+
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
@@ -148,13 +160,6 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    void Slide()
-    {
-        collider.height = 1.510348f;
-        collider.center = new Vector3(0, -0.2448258f, 0);
-        cameraPosition.localPosition = new Vector3(0, cameraPosition.localPosition.y - 0.2448258f, 0);
-        rb.AddForce(moveDirection * slidingSpeed, ForceMode.Impulse);
-    }
 
     void MyInput()
     {
@@ -163,22 +168,30 @@ public class PlayerMovement : MonoBehaviour
 
         moveDirection = orientation.forward * verticalMovement + orientation.right * horizotalMovement;
 
+
     }
 
 
     void ControlSpeed()
     {
-        if (Input.GetKey(sprintKey) && isGrounded)
-        {            
-            moveSpeed = Mathf.Lerp(moveSpeed, sprintSpeed, acceleration * Time.deltaTime);
-            fovController.setRunFov();
+        
+        moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
+  
+        
+    }
+
+    void ControlFOV() 
+    {
+        if (rb.velocity.magnitude == 0)
+        {
+            fovController.resetFov();
         }
         else
         {
-            fovController.resetFov();
-            moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
+            fovController.setRunFov();
         }
     }
+
 
     void ControlDrag()
     {
