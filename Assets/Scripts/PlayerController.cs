@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
 
-    public bool tagged = false;
+    public bool tagged = true;
     public float messageDuration = 2f;
     public Text messages;
     public static string text;
@@ -19,14 +19,14 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            if (tagged == true)
-            {
-                Debug.Log("TAGGED");
-                StartCoroutine(TagPlayer(other)); 
-            }
-        }
+        // if (other.CompareTag("Player"))
+        // {
+        //     if (tagged == true)
+        //     {
+        //         Debug.Log("TAGGED");
+        //         StartCoroutine(TagPlayer(other)); 
+        //     }
+        // }
     }
 
 

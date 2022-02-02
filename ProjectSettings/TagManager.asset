@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - LocalPlayer
+  - TAGGED
+  - NOT TAGGED
   layers:
   - Default
   - TransparentFX
