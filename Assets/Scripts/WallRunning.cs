@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class WallRunning : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class WallRunning : MonoBehaviour
 
     bool isWallRunning;
 
+    PhotonView PV;
 
     public float tilt { get; private set; }
     bool CanWallRun()
@@ -38,9 +40,15 @@ public class WallRunning : MonoBehaviour
     RaycastHit rightWallHit;
 
     private Rigidbody rb;
+    void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
 
     private void Start()
     {
+        if (!PV.IsMine)
+            return;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -51,6 +59,8 @@ public class WallRunning : MonoBehaviour
 
     private void Update()
     {
+        if (!PV.IsMine)
+            return;
         CheckWall();
 
         if (CanWallRun())
