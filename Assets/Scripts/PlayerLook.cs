@@ -31,8 +31,7 @@ public class PlayerLook : MonoBehaviour
     {
         MyInput();
 
-        cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
-        orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+     
     }
 
     void MyInput()
@@ -44,5 +43,44 @@ public class PlayerLook : MonoBehaviour
         xRotation -= mouseY * sensY * multiplier;
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        if (Input.GetKey(KeyCode.F))
+        {
+            Debug.Log("pressed F");
+            cam.LookAt(GetClosestEnemy());
+        }
+        else
+        {
+            cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
+            orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        }
+    }
+
+    Transform GetClosestEnemy()
+    {
+        GameObject[] enemies = null;
+
+        if (enemies == null)
+            enemies = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log(enemies.Length);
+
+
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (GameObject potentialTarget in enemies)
+        {
+            Transform potentialTargetTransform = potentialTarget.transform;
+            Vector3 directionToTarget = potentialTargetTransform.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTargetTransform;
+            }
+        }
+
+        Debug.Log(bestTarget);
+        return bestTarget;
     }
 }

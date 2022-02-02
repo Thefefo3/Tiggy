@@ -80,6 +80,12 @@ public class PlayerMovement : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
         }
+        else
+        {
+            this.tag = "LocalPlayer";
+        }
+
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         originalHeight = collider.height;
@@ -93,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        
+
 
         MyInput();
         ControlDrag();
