@@ -331,6 +331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fovController: {fileID: 4280931723051043887}
   wallRunning: {fileID: 4280931723051043880}
+  anim: {fileID: 0}
   collider: {fileID: 4280931724595349679}
   orientation: {fileID: 4280931725051305133}
   jumpForce: 17
@@ -367,10 +368,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0061c565652b1a9458c3f2d98d5c0fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   wallRunning: {fileID: 4280931723051043880}
   sensX: 100
   sensY: 100
   cam: {fileID: 6731563375940040246}
+  body: {fileID: 0}
   orientation: {fileID: 4280931725051305133}
 --- !u!114 &4280931723051043880
 MonoBehaviour:
