@@ -87,8 +87,10 @@ public class WallRunning : MonoBehaviour
     }
     void CheckWall()
     {
-        wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallHit, wallDistance);
-        wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallHit, wallDistance);
+        int layerMask = 1 << 9;
+        //layerMask = ~layerMask;
+        wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallHit, wallDistance, layerMask);
+        wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallHit, wallDistance, layerMask);
     }
 
     void StartWallRun()
