@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
+
+
+    public Animator anim;
     [Header("References")]
     [SerializeField] WallRunning wallRunning;
 
@@ -11,6 +14,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float sensY = 100f;
 
     [SerializeField] Transform cam;
+    [SerializeField] Transform body;
     [SerializeField] Transform orientation;
 
     float mouseX;
@@ -25,6 +29,7 @@ public class PlayerLook : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -32,16 +37,24 @@ public class PlayerLook : MonoBehaviour
         MyInput();
 
         cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
+        body.transform.localRotation = Quaternion.Euler(0, yRotation, wallRunning.tilt);
+
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
     }
+
 
     void MyInput()
     {
         mouseX = Input.GetAxisRaw("Mouse X");
         mouseY = Input.GetAxisRaw("Mouse Y");
 
+
         yRotation += mouseX * sensX * multiplier;
         xRotation -= mouseY * sensY * multiplier;
+
+        
+
+
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
     }

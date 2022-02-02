@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 
     public FovController fovController;
     public Animator anim;
+
+    float rotationFactorPerFrame=1.0f;
   
 
     PhotonView PV;
@@ -82,20 +84,23 @@ public class PlayerMovement : MonoBehaviour
             Destroy(rb);
         }
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
         rb.freezeRotation = true;
         originalHeight = collider.height;
         collider.center = new Vector3(0, 0, 0);
+
     }
 
 
     private void Update()
     {
+
         if (!PV.IsMine)
             return;
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        
 
+        //handleRotation(); 
         MyInput();
         ControlDrag();
         ControlSpeed();
@@ -103,10 +108,13 @@ public class PlayerMovement : MonoBehaviour
         //Jump
         if(Input.GetKeyDown(jumpKey) && isGrounded || Input.GetKeyDown(jumpKey) && jumpsLeft > 0)
         {
+           
             Jump();
+            
         }
         if (isGrounded)
         {
+            //this.anim.SetBool("jump", false);
             jumpsLeft = maxJumps - 1;
         }
 
@@ -130,10 +138,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded || jumpsLeft > 0)
         {
+            
             jumpsLeft = jumpsLeft - 1;
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            this.anim.SetBool("jump", this.isGrounded);
+            this.anim.Play("Jump");
         }
     }
     private bool OnSlope()
@@ -171,6 +180,22 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    /*
+    void handleRotation()
+    {
+        Vector3 positionToLookAt;
+        
+        positionToLookAt.x = moveDirection.x;
+        positionToLookAt.y = 0.0f;
+        positionToLookAt.z = moveDirection.z;
+
+        Quaternion currentRotation = transform.rotation;
+
+        Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
+        transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
+
+    }
+    */
 
     void ControlSpeed()
     {
