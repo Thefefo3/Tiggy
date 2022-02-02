@@ -18,7 +18,7 @@ public class tutorialScript : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            SceneManager.LoadScene(1, LoadSceneMode.Single);
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
         }
     }
 }
