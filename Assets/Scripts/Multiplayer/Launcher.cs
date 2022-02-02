@@ -127,7 +127,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void PlayTutorial()
     {
-        PhotonNetwork.LoadLevel(3);
+        PhotonNetwork.LoadLevel(2);
     }
 
     public void Disconnect()
