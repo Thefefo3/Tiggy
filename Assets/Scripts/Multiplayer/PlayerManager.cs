@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour
 {
     PhotonView PV;
 
+    private bool tagged;
+
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -24,6 +26,19 @@ public class PlayerManager : MonoBehaviour
 
     void CreateController()
     {
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerFinal"), new Vector3(40, 62, -114), Quaternion.identity);
+        Transform spawnPoint;
+        Debug.Log("Tagger: " + RoomManager.Instance.FirstTagger.NickName);
+        if (PV.Owner.NickName == RoomManager.Instance.FirstTagger.NickName)
+        {
+            spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
+        }
+        else
+        {
+            spawnPoint = SpawnManager.Instance.GetRunnerSpawnpoint();
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerNotTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
+        }
     }
+
+    
 }

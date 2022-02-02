@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 5275785642060352041}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: NOT TAGGED
+  m_TagString: TAGGED
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 4827960457546340058}
   - component: {fileID: 6500113814927120854}
   m_Layer: 0
-  m_Name: PlayerFinal
+  m_Name: PlayerTagged
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -795,8 +795,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
