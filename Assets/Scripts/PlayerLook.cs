@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] Transform body;
     [SerializeField] Transform orientation;
 
+    PhotonView PV;
+
     float mouseX;
     float mouseY;
 
@@ -24,6 +27,11 @@ public class PlayerLook : MonoBehaviour
 
     float xRotation;
     float yRotation;
+
+    void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+    }
 
     private void Start()
     {
@@ -34,10 +42,15 @@ public class PlayerLook : MonoBehaviour
 
     private void Update()
     {
+        if (!PV.IsMine)
+            return;
+        
         MyInput();
 
-        cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
-        body.transform.localRotation = Quaternion.Euler(0, yRotation, wallRunning.tilt);
+        //cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        //body.transform.localRotation = Quaternion.Euler(0, yRotation, wallRunning.tilt);
+        transform.localRotation = Quaternion.Euler(0, yRotation, wallRunning.tilt);
 
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
