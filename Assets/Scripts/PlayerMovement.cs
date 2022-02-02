@@ -30,9 +30,9 @@ public class PlayerMovement : MonoBehaviour
     public float lowJumpMultiplier = 2.5f;
 
     [Header("Movement")]
-    [SerializeField] float moveSpeed = 14f;
+    [SerializeField]public float moveSpeed = 14f;
     [SerializeField] float airMultiplier = 0.4f;
-    [SerializeField] float movementMultiplier = 10f;
+    [SerializeField]public float movementMultiplier = 10f;
 
     [Header("Sprinting")]
     [SerializeField] float walkSpeed = 14f;

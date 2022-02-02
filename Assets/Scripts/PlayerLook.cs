@@ -44,15 +44,20 @@ public class PlayerLook : MonoBehaviour
     {
         if (!PV.IsMine)
             return;
-        
+
+
         MyInput();
+
 
         //cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+   
         //body.transform.localRotation = Quaternion.Euler(0, yRotation, wallRunning.tilt);
         transform.localRotation = Quaternion.Euler(0, yRotation, wallRunning.tilt);
 
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+
+        KeyInput();
 
     }
 
@@ -66,12 +71,14 @@ public class PlayerLook : MonoBehaviour
         yRotation += mouseX * sensX * multiplier;
         xRotation -= mouseY * sensY * multiplier;
 
-        
-
-
-
+       
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
+        
+    }
+
+    void KeyInput()
+    {
         if (Input.GetKey(KeyCode.F))
         {
             Debug.Log("pressed F");
@@ -79,7 +86,7 @@ public class PlayerLook : MonoBehaviour
         }
         else
         {
-            cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, wallRunning.tilt);
+            cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
             orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
         }
     }
@@ -91,7 +98,6 @@ public class PlayerLook : MonoBehaviour
         if (enemies == null)
             enemies = GameObject.FindGameObjectsWithTag("Player");
         Debug.Log(enemies.Length);
-
 
         Transform bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;

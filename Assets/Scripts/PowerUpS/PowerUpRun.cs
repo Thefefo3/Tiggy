@@ -1,27 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PowerUpRun : MonoBehaviour
 {
     public GameObject pickupEffect;
 
-    public float multiplier = 1.5f;
+    public float multiplier = 1.2f;
     public float duration = 4f;
 
     public float messageDuration = 2f;
-    public Text messages;
+
     public static string text;
 
 
     public AudioClip endPowerUpClip;
-
     public AudioSource pickUpSound;
+
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("LocalPlayer") || other.CompareTag("Player") || other.CompareTag("TAGGED") || other.CompareTag("NOT TAGGED"))
         {
             pickUpSound.Play();
             StartCoroutine(Pickup(other));
@@ -39,33 +38,33 @@ public class PowerUpRun : MonoBehaviour
 
         //Apply Effect to the player
         PlayerMovement movement = player.GetComponentInParent<PlayerMovement>();
-        movement.sprintSpeed *= multiplier;
 
-        messages = GameObject.Find("PowerUpTXT").GetComponent<Text>();
-        text = "*1.5 Speed \n " + "Running Speed = " + movement.sprintSpeed;
-        messages.text = text;
-        messages.enabled = true;
+        PlayerController playerController = player.GetComponentInParent<PlayerController>();
+        movement.movementMultiplier *= multiplier;
+
+
+        text = "Extra Speed \n" + "Running Speed = "   + movement.movementMultiplier;
+        playerController.PrintText(text);
 
 
 
         //hide component
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<Collider>().enabled = false;
-        yield return new WaitForSeconds(messageDuration);
-        messages.enabled = false;
 
         //wait for time
         yield return new WaitForSeconds(duration);
 
         //return to default power
-        movement.sprintSpeed /= multiplier;
+        movement.movementMultiplier /= multiplier;
         AudioSource.PlayClipAtPoint(endPowerUpClip, player.transform.position);
-        messages = GameObject.Find("PowerUpTXT").GetComponent<Text>();
-        text = "Extra Speed Expired \n " + "Running Speed = " + movement.sprintSpeed;
-        messages.text = text;
-        messages.enabled = true;
+
+        text = "Extra Speed Expired \n " + "Running Speed = " + movement.movementMultiplier;
+
+
+            playerController.PrintText(text);
+
         yield return new WaitForSeconds(messageDuration);
-        messages.enabled = false;
 
         //Remove powerup object
         Destroy(clonedEffect);
