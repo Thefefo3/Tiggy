@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class MenuManager : MonoBehaviour
 {
@@ -42,5 +44,10 @@ public class MenuManager : MonoBehaviour
     public void CloseMenu(Menu menu)
     {
         menu.Close();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

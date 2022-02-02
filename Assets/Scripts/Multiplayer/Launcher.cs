@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -25,7 +26,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
-
         Debug.Log("Connecting to master");
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -126,5 +126,18 @@ public class Launcher : MonoBehaviourPunCallbacks
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
-    
+    public void PlayTutorial()
+    {
+        PhotonNetwork.LoadLevel(3);
+    }
+
+    public void Disconnect()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        MenuManager.Instance.OpenMenu("loading");
+    }
 }
