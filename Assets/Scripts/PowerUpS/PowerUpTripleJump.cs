@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PowerUpTripleJump : MonoBehaviour
 {
     public GameObject pickupEffect;
@@ -11,20 +12,25 @@ public class PowerUpTripleJump : MonoBehaviour
     public float duration = 10f;
 
     public float messageDuration = 2f;
-    public Text messages;
+
     public static string text;
 
     public AudioSource pickUpSound;
+
+
+
     public AudioSource endPowerUpSound;
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("LocalPlayer") || other.CompareTag("Player") || other.CompareTag("TAGGED") || other.CompareTag("NOT TAGGED"))
         {
             pickUpSound.Play();
             StartCoroutine(Pickup(other));
         }
     }
+
+
 
     IEnumerator Pickup(Collider player)
     {
@@ -37,32 +43,34 @@ public class PowerUpTripleJump : MonoBehaviour
 
         //Apply Effect to the player
         PlayerMovement movement = player.GetComponentInParent<PlayerMovement>();
+        PlayerController playerController = player.GetComponentInParent<PlayerController>();
+
         movement.maxJumps += adder;
 
-        messages = GameObject.Find("PowerUpTXT").GetComponent<Text>();
+
         text = "+1 Jump \n " + "Total Jumps = " + movement.maxJumps;
-        messages.text = text;
-        messages.enabled = true;
+
+   
+            playerController.PrintText(text);
+
 
         //hide component
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<Collider>().enabled = false;
-        yield return new WaitForSeconds(messageDuration);
-        messages.enabled = false;
+
 
 
         //wait for time
-        yield return new WaitForSeconds(duration-messageDuration);
+        yield return new WaitForSeconds(duration);
 
         //return to default power
         movement.maxJumps -= adder;
         endPowerUpSound.Play();
-        messages = GameObject.Find("PowerUpTXT").GetComponent<Text>();
+      
         text = "Extra Jump Expired \n " + "Total Jumps = " + movement.maxJumps;
-        messages.text = text;
-        messages.enabled = true;
-        yield return new WaitForSeconds(messageDuration);
-        messages.enabled = false;
+        
+
+            playerController.PrintText(text);
 
         //Remove powerup object
         Destroy(clonedEffect);

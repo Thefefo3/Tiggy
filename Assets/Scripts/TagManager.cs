@@ -37,7 +37,7 @@ public class TagManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("You are on the same team!!");
+            //Debug.Log("You are on the same team!!");
         }
     }
 

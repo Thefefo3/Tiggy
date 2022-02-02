@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SkinnedMeshRenderer skinnedMesh;
 
     PhotonView PV;
+    public float messageDuration = 3f;
+
+    public Text messages;
 
     PlayerManager playerManager;
 
@@ -37,5 +40,24 @@ public class PlayerController : MonoBehaviour
 
             PhotonNetwork.LoadLevel(0);
         }
+    }
+
+
+    public void PrintText(string text)
+    {
+        Debug.Log("Printing text" + text);
+        if (PV.IsMine)
+            StartCoroutine(PrintTextU(text)); 
+
+    }
+
+    IEnumerator PrintTextU(string text)
+    {
+        messages.text = text;
+        messages.enabled = true;
+
+        yield return new WaitForSeconds(messageDuration);
+
+        messages.enabled = false;
     }
 }
