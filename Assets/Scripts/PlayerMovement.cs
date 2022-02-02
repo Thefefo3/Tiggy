@@ -5,7 +5,10 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     public FovController fovController;
+    public Animator anim;
+  
 
     PhotonView PV;
 
@@ -130,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
             jumpsLeft = jumpsLeft - 1;
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            this.anim.SetBool("jump", this.isGrounded);
         }
     }
     private bool OnSlope()
@@ -162,6 +166,8 @@ public class PlayerMovement : MonoBehaviour
         verticalMovement = Input.GetAxisRaw("Vertical");
 
         moveDirection = orientation.forward * verticalMovement + orientation.right * horizotalMovement;
+        this.anim.SetFloat("vertical", verticalMovement);
+        this.anim.SetFloat("horizontal", horizotalMovement);
 
     }
 
@@ -194,6 +200,8 @@ public class PlayerMovement : MonoBehaviour
 
     void MovePlayer()
     {
+     
+
         if (isGrounded && !OnSlope())
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
@@ -206,6 +214,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
+
+        
        
     }
     private void FixedUpdate()
@@ -214,6 +224,12 @@ public class PlayerMovement : MonoBehaviour
             return;
         //Movement
         MovePlayer();
+        ControlDrag();
+        MyInput();
+     
+       
+      
+        
 
         //Sliding
 
