@@ -95,8 +95,10 @@ public class PlayerLook : MonoBehaviour
     {
         GameObject[] enemies = null;
 
-        if (enemies == null)
-            enemies = GameObject.FindGameObjectsWithTag("Player");
+        if (this.CompareTag("NOT TAGGED"))
+            enemies = GameObject.FindGameObjectsWithTag("TAGGED");
+        else
+            enemies = GameObject.FindGameObjectsWithTag("NOT TAGGED");
         Debug.Log(enemies.Length);
 
         Transform bestTarget = null;
