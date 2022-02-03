@@ -42,7 +42,7 @@ public class TagManager : MonoBehaviour
 
     IEnumerator TagPlayer(Collider player)
     {
-        player.tag = "TAGGED";
+        //player.tag = "TAGGED";
         yield return new WaitForSeconds(2f);
     }
 
