@@ -99,7 +99,8 @@ public class PlayerLook : MonoBehaviour
             enemies = GameObject.FindGameObjectsWithTag("TAGGED");
         else
             enemies = GameObject.FindGameObjectsWithTag("NOT TAGGED");
-        Debug.Log(enemies.Length);
+
+        Debug.Log("f: " + enemies.Length);
 
         Transform bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
@@ -116,7 +117,6 @@ public class PlayerLook : MonoBehaviour
             }
         }
 
-        Debug.Log(bestTarget);
         return bestTarget;
     }
 }

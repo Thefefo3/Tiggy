@@ -71,10 +71,8 @@ public class TagManager : MonoBehaviour, IOnEventCallback
 
             Transform spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation);
-
-            PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
         }
-
+        PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
         //Debug.Log(taggedPlayer.GetComponent<PhotonView>().Owner.NickName + " got tagged");
     }
 
