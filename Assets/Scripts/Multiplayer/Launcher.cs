@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -49,7 +50,15 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             return;
         }
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
+        Hashtable options = new Hashtable();
+        options.Add("test", "ciao");
+        RoomOptions roomOptions = new RoomOptions {
+            BroadcastPropsChangeToAll = false,
+            CleanupCacheOnLeave = true,
+            CustomRoomProperties = options
+        };
+        PhotonNetwork.CreateRoom(roomNameInputField.text, roomOptions);
+        
         MenuManager.Instance.OpenMenu("loading");
     }
 
@@ -68,6 +77,22 @@ public class Launcher : MonoBehaviourPunCallbacks
         for (int i = 0; i < players.Length; i++)
         {
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+        }
+
+        players = PhotonNetwork.PlayerList;
+        int j = Random.Range(0, players.Length);
+        for (int i = 0; i < players.Length; i++)
+        {
+            Hashtable setTagged = new Hashtable();
+            if (i == j)
+            {
+                setTagged.Add(players[i].NickName, 1);
+            }
+            else
+            {
+                setTagged.Add(players[i].NickName, 0);
+            }
+            PhotonNetwork.CurrentRoom.SetCustomProperties(setTagged);
         }
 
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);

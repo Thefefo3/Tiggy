@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
 
 public class PlayerManager : MonoBehaviour
 {
     PhotonView PV;
-
-    private bool tagged;
+    
 
     void Awake()
     {
@@ -27,8 +28,8 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         Transform spawnPoint;
-        Debug.Log("Tagger: " + RoomManager.Instance.FirstTagger.NickName);
-        if (PV.Owner.NickName == RoomManager.Instance.FirstTagger.NickName)
+        int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[PhotonNetwork.LocalPlayer.NickName];
+        if (tagged == 1)
         {
             spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
