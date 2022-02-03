@@ -94,8 +94,9 @@ public class PlayerLook : MonoBehaviour
     {
         GameObject[] enemies = null;
 
-        if (this.CompareTag("NOT TAGGED"))
-            enemies = GameObject.FindGameObjectsWithTag("TAGGED");
+        if (this.CompareTag("NOT TAGGED")) { 
+            //enemies = GameObject.FindGameObjectsWithTag("TAGGED");
+        }
         else
             enemies = GameObject.FindGameObjectsWithTag("NOT TAGGED");
 
