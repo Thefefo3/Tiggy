@@ -81,7 +81,6 @@ public class PlayerLook : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.F))
         {
-            Debug.Log("pressed F");
             cam.LookAt(GetClosestEnemy());
         }
         else
@@ -99,8 +98,6 @@ public class PlayerLook : MonoBehaviour
             enemies = GameObject.FindGameObjectsWithTag("TAGGED");
         else
             enemies = GameObject.FindGameObjectsWithTag("NOT TAGGED");
-
-        Debug.Log("f: " + enemies.Length);
 
         Transform bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;

@@ -23,6 +23,14 @@ public class TagManager : MonoBehaviour, IOnEventCallback
         PV = GetComponent<PhotonView>();    
     }
 
+    void Update()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if(this.tag != other.tag)
@@ -35,10 +43,6 @@ public class TagManager : MonoBehaviour, IOnEventCallback
             {
                 GetTagged();
             }
-        }
-        else
-        {
-            //Debug.Log("You are on the same team!!");
         }
     }
 
@@ -63,7 +67,6 @@ public class TagManager : MonoBehaviour, IOnEventCallback
     [PunRPC]
     void RPC_Tag()
     {
-        Debug.Log("RPC_TAG");
         Destroy(gameObject);
 
         if (PV.IsMine)
@@ -73,19 +76,16 @@ public class TagManager : MonoBehaviour, IOnEventCallback
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation);
         }
         PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
-        //Debug.Log(taggedPlayer.GetComponent<PhotonView>().Owner.NickName + " got tagged");
     }
 
     [PunRPC]
     void RPC_CheckProperties()
     {
         GameObject[] taggedPlayers = GameObject.FindGameObjectsWithTag("NOT TAGGED");
-        Debug.Log("non tagged players: " + taggedPlayers.Length);
+
         if (taggedPlayers.Length > 0)
             return;
-        //Destroy(RoomManager.Instance.gameObject);
-        //Launcher.Instance.Disconnect();
-        //PhotonNetwork.LoadLevel(3);
+
         const byte b = 17;
         PhotonNetwork.RaiseEvent(b, null, new RaiseEventOptions() { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
     }
@@ -96,7 +96,6 @@ public class TagManager : MonoBehaviour, IOnEventCallback
         const byte b = 17;
         if(eventCode == b)
         {
-            Debug.Log("ciao");
             Destroy(RoomManager.Instance.gameObject);
             Launcher.Instance.Disconnect();
             SceneManager.LoadScene(3);

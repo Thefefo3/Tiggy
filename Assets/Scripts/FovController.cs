@@ -29,7 +29,6 @@ public class FovController : MonoBehaviour
         if (!PV.IsMine)
             return;
         initialFOV = cam.fieldOfView;
-        Debug.Log(initialFOV * runFOVMultiplier);
     }
 
     // Update is called once per frame

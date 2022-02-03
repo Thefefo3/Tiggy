@@ -42,7 +42,6 @@ public class PlayerController : MonoBehaviour
 
     public void PrintText(string text)
     {
-        Debug.Log("Printing text" + text);
         if (PV.IsMine)
             StartCoroutine(PrintTextU(text)); 
 
