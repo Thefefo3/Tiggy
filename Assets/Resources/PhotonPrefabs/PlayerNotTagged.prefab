@@ -364,7 +364,7 @@ MonoBehaviour:
   myPlayerMovement: {fileID: 2290442488583255699}
   fovController: {fileID: 2290442488583255784}
   orientation: {fileID: 2290442487556073066}
-  wallDistance: 0.6
+  wallDistance: 1
   minimumJumpHeight: 1.2
   wallRunGravity: 0
   wallRunJumpForce: 3

@@ -50,12 +50,10 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             return;
         }
-        Hashtable options = new Hashtable();
-        options.Add("test", "ciao");
+
         RoomOptions roomOptions = new RoomOptions {
             BroadcastPropsChangeToAll = false,
-            CleanupCacheOnLeave = true,
-            CustomRoomProperties = options
+            CleanupCacheOnLeave = true
         };
         PhotonNetwork.CreateRoom(roomNameInputField.text, roomOptions);
         

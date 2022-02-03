@@ -1,8 +1,12 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 //Tags::
 //TAGGED
@@ -10,7 +14,7 @@ using UnityEngine;
 
 
 
-public class TagManager : MonoBehaviour
+public class TagManager : MonoBehaviour, IOnEventCallback
 {
     PhotonView PV;
 
@@ -48,8 +52,14 @@ public class TagManager : MonoBehaviour
 
     IEnumerator GetTagged()
     {
-        this.tag = "TAGGED";
+        this.tag = "TAGGED"; 
+        Hashtable setTagged = new Hashtable();
+        setTagged.Add(PhotonNetwork.LocalPlayer.NickName, 1);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(setTagged);
+
         PV.RPC("RPC_Tag", RpcTarget.All);
+        PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
+
         yield return new WaitForSeconds(2f);
     }
 
@@ -67,5 +77,47 @@ public class TagManager : MonoBehaviour
         }
 
         //Debug.Log(taggedPlayer.GetComponent<PhotonView>().Owner.NickName + " got tagged");
+    }
+
+    [PunRPC]
+    void RPC_CheckProperties()
+    {
+        Debug.Log("RPC_CheckProperties");
+        Player[] players = PhotonNetwork.PlayerList;
+        for (int i = 0; i < players.Length; i++)
+        {
+            int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[PhotonNetwork.LocalPlayer.NickName];
+            if (tagged == 0)
+                return;
+        }
+        //Destroy(RoomManager.Instance.gameObject);
+        //Launcher.Instance.Disconnect();
+        //PhotonNetwork.LoadLevel(3);
+        const byte b = 1;
+        PhotonNetwork.RaiseEvent(b, null, new RaiseEventOptions() { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        byte eventCode = photonEvent.Code;
+        const byte b = 1;
+        if(eventCode == b)
+        {
+            Debug.Log("ciao");
+            Destroy(RoomManager.Instance.gameObject);
+            Launcher.Instance.Disconnect();
+            SceneManager.LoadScene(3);
+        }
+        
+    }
+
+    private void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 }
