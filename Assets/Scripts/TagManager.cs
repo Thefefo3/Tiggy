@@ -53,15 +53,7 @@ public class TagManager : MonoBehaviour, IOnEventCallback
     void GetTagged()
     {
         this.tag = "TAGGED"; 
-        Hashtable setTagged = new Hashtable();
-        setTagged.Add(PhotonNetwork.LocalPlayer.NickName, 1);
-
-        do
-        {
-            PhotonNetwork.CurrentRoom.SetCustomProperties(setTagged);
-        } while ((int)PhotonNetwork.CurrentRoom.CustomProperties[PhotonNetwork.LocalPlayer.NickName] == 0);
-
-        
+       
 
         PV.RPC("RPC_Tag", RpcTarget.All);
         PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
@@ -80,8 +72,6 @@ public class TagManager : MonoBehaviour, IOnEventCallback
 
             Transform spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation);
-
-            PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
         }
 
         //Debug.Log(taggedPlayer.GetComponent<PhotonView>().Owner.NickName + " got tagged");
@@ -90,21 +80,9 @@ public class TagManager : MonoBehaviour, IOnEventCallback
     [PunRPC]
     void RPC_CheckProperties()
     {
-        Debug.Log("RPC_CheckProperties");
-        Player[] players = PhotonNetwork.PlayerList;
-        Debug.Log("players length: " + players.Length);
-        for (int i = 0; i < players.Length; i++)
-        {
-            int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[players[i].NickName];
-            Debug.Log("name: " + players[i].NickName + " tagged val: " + tagged);
-        }
-        for (int i = 0; i < players.Length; i++)
-        {
-            int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[players[i].NickName];
-
-            if (tagged == 0)
-                return;
-        }
+        GameObject[] taggedPlayers = GameObject.FindGameObjectsWithTag("NOT TAGGED");
+        if (taggedPlayers.Length > 0)
+            return;
         //Destroy(RoomManager.Instance.gameObject);
         //Launcher.Instance.Disconnect();
         //PhotonNetwork.LoadLevel(3);
