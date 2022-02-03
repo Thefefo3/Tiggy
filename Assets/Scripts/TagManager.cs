@@ -29,11 +29,11 @@ public class TagManager : MonoBehaviour, IOnEventCallback
         {
             if (this.CompareTag("TAGGED") && other.CompareTag("NOT TAGGED"))
             {
-                StartCoroutine(TagPlayer(other));
+                TagPlayer(other);
             }
             else if (this.CompareTag("NOT TAGGED") && other.CompareTag("TAGGED"))
             {
-                StartCoroutine(GetTagged());
+                GetTagged();
             }
         }
         else
@@ -44,13 +44,13 @@ public class TagManager : MonoBehaviour, IOnEventCallback
 
 
 
-    IEnumerator TagPlayer(Collider player)
+    void TagPlayer(Collider player)
     {
         //player.tag = "TAGGED";
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(0f);
     }
 
-    IEnumerator GetTagged()
+    void GetTagged()
     {
         this.tag = "TAGGED"; 
         Hashtable setTagged = new Hashtable();
@@ -66,7 +66,7 @@ public class TagManager : MonoBehaviour, IOnEventCallback
         PV.RPC("RPC_Tag", RpcTarget.All);
         PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
 
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(0f);
     }
 
     [PunRPC]
