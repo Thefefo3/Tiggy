@@ -12,15 +12,24 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 //TAGGED
 //NOT TAGGED
 
-
-
 public class TagManager : MonoBehaviour, IOnEventCallback
 {
     PhotonView PV;
 
+    PlayerController playerController;
+
     void Awake()
     {
-        PV = GetComponent<PhotonView>();    
+        PV = GetComponent<PhotonView>();
+        playerController = GetComponent<PlayerController>();
+    }
+
+    void Start()
+    {
+        if (PV.IsMine && this.CompareTag("TAGGED"))
+        { 
+            playerController.PrintText("You are tagged!");
+        }
     }
 
     void Update()
@@ -50,14 +59,17 @@ public class TagManager : MonoBehaviour, IOnEventCallback
 
     void TagPlayer(Collider player)
     {
+        Debug.Log("Tagged");
+        player.gameObject.tag = "TAGGED";
+        playerController.PrintText("You tagged " + player.GetComponent<PhotonView>().Owner.NickName);
         //player.tag = "TAGGED";
         //yield return new WaitForSeconds(0f);
+
     }
 
     void GetTagged()
     {
-        this.tag = "TAGGED"; 
-       
+        //this.tag = "TAGGED";
 
         PV.RPC("RPC_Tag", RpcTarget.All);
 
@@ -87,7 +99,8 @@ public class TagManager : MonoBehaviour, IOnEventCallback
             return;
 
         const byte b = 17;
-        PhotonNetwork.RaiseEvent(b, null, new RaiseEventOptions() { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
+        if(PhotonNetwork.PlayerList.Length > 1)
+            PhotonNetwork.RaiseEvent(b, null, new RaiseEventOptions() { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
     }
 
     public void OnEvent(EventData photonEvent)
