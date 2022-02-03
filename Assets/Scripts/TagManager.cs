@@ -1,5 +1,7 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 //Tags::
@@ -10,27 +12,22 @@ using UnityEngine;
 
 public class TagManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    PhotonView PV;
 
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+        PV = GetComponent<PhotonView>();    
     }
 
     void OnTriggerEnter(Collider other)
     {
         if(this.tag != other.tag)
         {
-            if (this.CompareTag("TAGGED"))
+            if (this.CompareTag("TAGGED") && other.CompareTag("NOT TAGGED"))
             {
                 StartCoroutine(TagPlayer(other));
             }
-            else if (this.CompareTag("NOT TAGGED"))
+            else if (this.CompareTag("NOT TAGGED") && other.CompareTag("TAGGED"))
             {
                 StartCoroutine(GetTagged());
             }
@@ -52,7 +49,23 @@ public class TagManager : MonoBehaviour
     IEnumerator GetTagged()
     {
         this.tag = "TAGGED";
+        PV.RPC("RPC_Tag", RpcTarget.All);
         yield return new WaitForSeconds(2f);
     }
 
+    [PunRPC]
+    void RPC_Tag()
+    {
+        Debug.Log("RPC_TAG");
+        Destroy(gameObject);
+
+        if (PV.IsMine)
+        {
+
+            Transform spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation);
+        }
+
+        //Debug.Log(taggedPlayer.GetComponent<PhotonView>().Owner.NickName + " got tagged");
+    }
 }

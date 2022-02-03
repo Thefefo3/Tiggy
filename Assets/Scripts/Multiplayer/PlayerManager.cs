@@ -27,19 +27,28 @@ public class PlayerManager : MonoBehaviour
 
     void CreateController()
     {
-        Transform spawnPoint;
         int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[PhotonNetwork.LocalPlayer.NickName];
         if (tagged == 1)
         {
-            spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
+            CreateControllerTagged();
         }
         else
         {
-            spawnPoint = SpawnManager.Instance.GetRunnerSpawnpoint();
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerNotTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
+            CreateControllerNotTagged();
         }
     }
 
-    
+    void CreateControllerTagged()
+    {
+        Transform spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
+    }
+
+    void CreateControllerNotTagged()
+    {
+        Transform spawnPoint = SpawnManager.Instance.GetRunnerSpawnpoint();
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerNotTagged"), spawnPoint.position, spawnPoint.rotation, 0, new object[] { PV.ViewID });
+    }
+
+
 }

@@ -14,12 +14,9 @@ public class PlayerController : MonoBehaviour
 
     public Text messages;
 
-    PlayerManager playerManager;
-
     void Awake()
     {
         PV = GetComponent<PhotonView>();
-        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     void Start()

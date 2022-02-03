@@ -233,12 +233,9 @@ GameObject:
   - component: {fileID: 2290442487978472047}
   - component: {fileID: 2290442487978472042}
   - component: {fileID: 2290442487978472041}
-  - component: {fileID: 2603706388624823694}
-  - component: {fileID: 2500555142002566728}
-  - component: {fileID: 5275785642060352041}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: TAGGED
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -307,46 +304,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2603706388624823694
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2290442487978472046}
-  m_Material: {fileID: 13400000, guid: b86efb0eb7e4d474ab20542c368185db, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 1.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &2500555142002566728
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2290442487978472046}
-  m_Material: {fileID: 13400000, guid: b86efb0eb7e4d474ab20542c368185db, type: 2}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 1.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5275785642060352041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2290442487978472046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa6e040c0e2f6664b806d1ec03a1db36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2290442488583255698
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,9 +323,12 @@ GameObject:
   - component: {fileID: 7641488234319083705}
   - component: {fileID: 4827960457546340058}
   - component: {fileID: 6500113814927120854}
+  - component: {fileID: 880084369419663894}
+  - component: {fileID: 1129526459456098355}
+  - component: {fileID: 8775121048981555462}
   m_Layer: 0
   m_Name: PlayerTagged
-  m_TagString: Player
+  m_TagString: TAGGED
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -425,7 +385,7 @@ MonoBehaviour:
   fovController: {fileID: 2290442488583255784}
   wallRunning: {fileID: 2290442488583255791}
   anim: {fileID: 4827960457546340058}
-  collider: {fileID: 2603706388624823694}
+  collider: {fileID: 1129526459456098355}
   orientation: {fileID: 2290442487556073066}
   jumpForce: 17
   maxJumps: 2
@@ -600,6 +560,46 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &880084369419663894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290442488583255698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6e040c0e2f6664b806d1ec03a1db36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &1129526459456098355
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290442488583255698}
+  m_Material: {fileID: 13400000, guid: b86efb0eb7e4d474ab20542c368185db, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &8775121048981555462
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290442488583255698}
+  m_Material: {fileID: 13400000, guid: b86efb0eb7e4d474ab20542c368185db, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2290442488699328759
 GameObject:
   m_ObjectHideFlags: 0

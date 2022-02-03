@@ -86,10 +86,6 @@ public class PlayerMovement : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
         }
-        else
-        {
-            this.tag = "LocalPlayer";
-        }
 
 
         rb = GetComponent<Rigidbody>();
