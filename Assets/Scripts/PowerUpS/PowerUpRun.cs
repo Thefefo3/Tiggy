@@ -6,7 +6,7 @@ public class PowerUpRun : MonoBehaviour
 {
     public GameObject pickupEffect;
 
-    public float multiplier = 1.2f;
+    public float multiplier = 1.1f;
     public float duration = 4f;
 
     public float messageDuration = 2f;
@@ -43,7 +43,7 @@ public class PowerUpRun : MonoBehaviour
         movement.movementMultiplier *= multiplier;
 
 
-        text = "Extra Speed \n" + "Running Speed = "   + movement.movementMultiplier;
+        text = "Running speed increased!";
         playerController.PrintText(text);
 
 
@@ -59,7 +59,7 @@ public class PowerUpRun : MonoBehaviour
         movement.movementMultiplier /= multiplier;
         AudioSource.PlayClipAtPoint(endPowerUpClip, player.transform.position);
 
-        text = "Extra Speed Expired \n " + "Running Speed = " + movement.movementMultiplier;
+        text = "Extra Speed Expired";
 
 
             playerController.PrintText(text);

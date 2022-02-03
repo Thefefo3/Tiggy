@@ -112,10 +112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupEffect: {fileID: 1329845292236604, guid: 9bba9cf244c53c5439505dfc96fdd11c,
     type: 3}
-  multiplier: 1.5
+  multiplier: 1.2
   duration: 10
   messageDuration: 2
-  messages: {fileID: 0}
   endPowerUpClip: {fileID: 8300000, guid: e0e21c2baec7cde478e4b9df21f5cf74, type: 3}
   pickUpSound: {fileID: -619218137214950956}
 --- !u!82 &-619218137214950956

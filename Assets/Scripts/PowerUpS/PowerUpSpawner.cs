@@ -7,7 +7,7 @@ public class PowerUpSpawner : MonoBehaviour
 
     public GameObject[] powerUps;
     public GameObject powerUp;
-    public float spawnWait = 500;
+    public float spawnWait = 100;
     public float spawnMostWait;
     public float spawnLeasttWait;
     public int startWait = 0;

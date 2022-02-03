@@ -8,7 +8,7 @@ public class PowerUpTripleJump : MonoBehaviour
 {
     public GameObject pickupEffect;
 
-    public float adder = 1f;
+    public float adder = 2f;
     public float duration = 10f;
 
     public float messageDuration = 2f;
@@ -48,7 +48,7 @@ public class PowerUpTripleJump : MonoBehaviour
         movement.maxJumps += adder;
 
 
-        text = "+1 Jump \n " + "Total Jumps = " + movement.maxJumps;
+        text = "+2 Jumps \n " + "Total Jumps = " + movement.maxJumps;
 
    
             playerController.PrintText(text);
@@ -67,7 +67,7 @@ public class PowerUpTripleJump : MonoBehaviour
         movement.maxJumps -= adder;
         endPowerUpSound.Play();
       
-        text = "Extra Jump Expired \n " + "Total Jumps = " + movement.maxJumps;
+        text = "Extra Jumps Expired \n " + "Total Jumps = " + movement.maxJumps;
         
 
             playerController.PrintText(text);
