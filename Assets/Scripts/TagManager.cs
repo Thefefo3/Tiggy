@@ -56,7 +56,6 @@ public class TagManager : MonoBehaviour, IOnEventCallback
        
 
         PV.RPC("RPC_Tag", RpcTarget.All);
-        PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
 
         //yield return new WaitForSeconds(0f);
     }
@@ -72,6 +71,8 @@ public class TagManager : MonoBehaviour, IOnEventCallback
 
             Transform spawnPoint = SpawnManager.Instance.GetTaggerSpawnpoint();
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerTagged"), spawnPoint.position, spawnPoint.rotation);
+
+            PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
         }
 
         //Debug.Log(taggedPlayer.GetComponent<PhotonView>().Owner.NickName + " got tagged");
@@ -81,6 +82,7 @@ public class TagManager : MonoBehaviour, IOnEventCallback
     void RPC_CheckProperties()
     {
         GameObject[] taggedPlayers = GameObject.FindGameObjectsWithTag("NOT TAGGED");
+        Debug.Log("non tagged players: " + taggedPlayers.Length);
         if (taggedPlayers.Length > 0)
             return;
         //Destroy(RoomManager.Instance.gameObject);
