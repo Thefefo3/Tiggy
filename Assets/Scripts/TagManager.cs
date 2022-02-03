@@ -84,23 +84,24 @@ public class TagManager : MonoBehaviour, IOnEventCallback
     {
         Debug.Log("RPC_CheckProperties");
         Player[] players = PhotonNetwork.PlayerList;
+        Debug.Log("players length: " + players.Length);
         for (int i = 0; i < players.Length; i++)
         {
-            int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[PhotonNetwork.LocalPlayer.NickName];
+            int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[players[i].NickName];
             if (tagged == 0)
                 return;
         }
         //Destroy(RoomManager.Instance.gameObject);
         //Launcher.Instance.Disconnect();
         //PhotonNetwork.LoadLevel(3);
-        const byte b = 1;
+        const byte b = 17;
         PhotonNetwork.RaiseEvent(b, null, new RaiseEventOptions() { Receivers = ReceiverGroup.All }, SendOptions.SendReliable);
     }
 
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
-        const byte b = 1;
+        const byte b = 17;
         if(eventCode == b)
         {
             Debug.Log("ciao");
