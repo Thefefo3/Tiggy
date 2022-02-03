@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -33,12 +34,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Destroy(RoomManager.Instance.gameObject);
-            Launcher.Instance.Disconnect();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-
-            PhotonNetwork.LoadLevel(0);
+            if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Tutorial")){
+                SceneManager.LoadScene("MenuLobby");
+            }
+            else
+            {
+                Destroy(RoomManager.Instance.gameObject);
+                Launcher.Instance.Disconnect();
+                PhotonNetwork.LoadLevel(0);
+            }
         }
     }
 

@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher Instance;
+    public Player FirstTagger;
 
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] TMP_Text errorText;
@@ -71,6 +72,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
 
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+
+        StartCoroutine(ChooseTagger());
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -124,6 +127,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+        StartCoroutine(ChooseTagger());
     }
 
     public void PlayTutorial()
@@ -139,5 +143,15 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         MenuManager.Instance.OpenMenu("loading");
+    }
+
+    private IEnumerator ChooseTagger()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Player[] players = PhotonNetwork.PlayerList;
+        Debug.Log(players.Length);
+        FirstTagger = players[Random.Range(0, players.Length)];
+        Debug.Log("Total players: " + PhotonNetwork.PlayerList.Length);
+        Debug.Log("Player entered. Tagger is now: " + FirstTagger.NickName);
     }
 }

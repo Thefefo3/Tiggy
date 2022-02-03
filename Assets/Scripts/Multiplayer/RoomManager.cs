@@ -10,7 +10,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Instance;
 
-    public Player FirstTagger;
+    //public Player FirstTagger;
 
     void Awake()
     {
@@ -39,10 +39,16 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         if(scene.buildIndex == 1) //we're in the game scene
         {
-            Player[] players = PhotonNetwork.PlayerList;
-            FirstTagger = players[Random.Range(0, players.Length)];
+
+            PhotonView.Get(this).RPC("debugTest", RpcTarget.All, "It's " + PhotonNetwork.LocalPlayer.NickName + ". First tagger is " + Launcher.Instance.FirstTagger.NickName);
 
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
+    }
+
+    [PunRPC]
+    void debugTest(string msg)
+    {
+        Debug.Log(msg);
     }
 }

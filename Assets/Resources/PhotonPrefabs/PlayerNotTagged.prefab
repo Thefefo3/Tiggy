@@ -1106,15 +1106,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16733fb36e55a4d8085966ebee53de21, type: 3}
---- !u!4 &1880818549520371705 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6370506033272729420, guid: 16733fb36e55a4d8085966ebee53de21,
-    type: 3}
-  m_PrefabInstance: {fileID: 4788056468267245749}
-  m_PrefabAsset: {fileID: 0}
 --- !u!137 &8787473031282407302 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4287980813049206579, guid: 16733fb36e55a4d8085966ebee53de21,
+    type: 3}
+  m_PrefabInstance: {fileID: 4788056468267245749}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1880818549520371705 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6370506033272729420, guid: 16733fb36e55a4d8085966ebee53de21,
     type: 3}
   m_PrefabInstance: {fileID: 4788056468267245749}
   m_PrefabAsset: {fileID: 0}
