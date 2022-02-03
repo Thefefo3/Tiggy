@@ -55,7 +55,13 @@ public class TagManager : MonoBehaviour, IOnEventCallback
         this.tag = "TAGGED"; 
         Hashtable setTagged = new Hashtable();
         setTagged.Add(PhotonNetwork.LocalPlayer.NickName, 1);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(setTagged);
+
+        do
+        {
+            PhotonNetwork.CurrentRoom.SetCustomProperties(setTagged);
+        } while ((int)PhotonNetwork.CurrentRoom.CustomProperties[PhotonNetwork.LocalPlayer.NickName] == 0);
+
+        
 
         PV.RPC("RPC_Tag", RpcTarget.All);
         PV.RPC("RPC_CheckProperties", RpcTarget.MasterClient);
@@ -88,6 +94,12 @@ public class TagManager : MonoBehaviour, IOnEventCallback
         for (int i = 0; i < players.Length; i++)
         {
             int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[players[i].NickName];
+            Debug.Log("name: " + players[i].NickName + " tagged val: " + tagged);
+        }
+        for (int i = 0; i < players.Length; i++)
+        {
+            int tagged = (int)PhotonNetwork.CurrentRoom.CustomProperties[players[i].NickName];
+
             if (tagged == 0)
                 return;
         }
